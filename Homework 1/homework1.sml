@@ -42,8 +42,7 @@ fun number_in_months (date_list : (int * int * int) list, month_list : int list)
 fun dates_in_month (date_list : (int * int  * int) list, month : int) =
     if null date_list
     then []
-    else if
-        #2 (hd date_list) = month
+    else if #2 (hd date_list) = month
     then (hd date_list) :: dates_in_month(tl date_list, month)
     else dates_in_month(tl date_list, month)
 
@@ -98,12 +97,12 @@ fun date_to_string (date : (int * int * int)) =
 
 fun number_before_reaching_sum (sum : int, numbers : int list) =
     let
-        fun count (acc : int, n : int, numbers : int list) =
+        fun counter (acc : int, n : int, numbers : int list) =
             if acc + hd (numbers) >= sum
             then n
-            else count (acc + hd (numbers), n + 1, tl (numbers))
+            else counter (acc + hd (numbers), n + 1, tl (numbers))
     in
-        count (0, 0, numbers)
+        counter (0, 0, numbers)
     end
 
 (* int -> int
