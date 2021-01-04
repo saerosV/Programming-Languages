@@ -198,15 +198,15 @@ fun officiate (card_list, move_list, goal) =
     let
         fun helper (card_list, move_list, held_cards) =
             case move_list of
-                [] => held_cards
+                [] => score(held_cards, goal)
               | Discard(c)::ys' => helper(card_list, ys', remove_card(held_cards, c, IllegalMove))
               | Draw::ys' => case card_list of
-                                 [] => held_cards
+                                 [] => score(held_cards, goal)
                                | x::xs' => case sum_cards(held_cards@[x]) > goal of
-                                               true => held_cards@[x]
+                                               true => score(held_cards@[x], goal)
                                              | false => helper(remove_card(card_list, x, IllegalMove),
                                                                ys',
                                                                held_cards@[x])
     in
-        score(helper(card_list, move_list, []), goal)
+        helper(card_list, move_list, [])
     end
