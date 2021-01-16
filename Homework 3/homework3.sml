@@ -7,7 +7,7 @@
 fun only_capitals xs =
     List.filter(fn s => Char.isUpper(String.sub (s,0))) xs
 
-(* Another approach I find a little more readable than the previous version.
+(* Another approach, I find it a little more readable than the other.
 
 fun only_capitals xs =
     let
