@@ -175,19 +175,19 @@ fun count_some_var (str, p) =
 
 fun check_pat p =
     let
-        fun make_list p =
+        fun make_lst p =
             case p of
                 Variable x        => [x]
-              | TupleP ps         => List.foldl(fn (p,x) => (make_list p) @ x) [] ps
-              | ConstructorP(_,p) => make_list p
+              | TupleP ps         => List.foldl(fn (p,x) => (make_lst p) @ x) [] ps
+              | ConstructorP(_,p) => make_lst p
               | _                 => []
-        fun all_diferent lst =
+        fun all_different lst =
             case lst of
                 []         => true
               | _::[]      => true
-              | x::xs::xs' => x <> xs andalso all_diferent xs'
+              | x::xs::xs' => x <> xs andalso all_different xs'
     in
-        all_diferent (make_list p)
+        all_different (make_lst p)
     end
 
 (* 11
