@@ -158,15 +158,15 @@
 ; ((cached-assoc (listof X) n) v)
 
 (define (cached-assoc xs n)
-  (let ([cache (make-vector n #f)] [slot-pos 0])
-        (lambda (v)
-           (let ([vec-ans (vector-assoc v cache)]
-                 [assoc-ans (assoc v xs)])
-             (cond [(pair? vec-ans) vec-ans]
-                   [(pair? assoc-ans)
-                    (begin (vector-set! cache slot-pos assoc-ans)
-                           (set! slot-pos (if (= (+ slot-pos 1) n)
-                                              0
-                                              (+ slot-pos 1)))
-                           assoc-ans)]
-                   [else #f])))))
+  (letrec ([cache (make-vector n #f)] [slot-pos 0]
+           [f (lambda (v)
+                (let ([vec-ans (vector-assoc v cache)]
+                      [assoc-ans (assoc v xs)])
+                  (cond [(pair? vec-ans) vec-ans]
+                        [(pair? assoc-ans)
+                         (begin (vector-set! cache slot-pos assoc-ans)
+                                (set! slot-pos (if (= (+ slot-pos 1) n)
+                                                   0
+                                                   (+ slot-pos 1)))
+                                assoc-ans)])))])
+    f))
