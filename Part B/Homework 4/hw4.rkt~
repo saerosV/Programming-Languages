@@ -1,6 +1,7 @@
 #lang racket
 
 (require rackunit)
+(require racket/bool)
 (provide (all-defined-out))
 
 ;; Put your code below
@@ -154,7 +155,6 @@
 ;; called. ASSUME: n is positive.
 
 ;; How to call the function:
-
 ; ((cached-assoc (listof X) n) v)
 
 (define (cached-assoc xs n)
@@ -162,12 +162,11 @@
            [f (lambda (v)
                 (let ([vec-ans (vector-assoc v cache)]
                       [assoc-ans (assoc v xs)])
-                  (cond [(pair? vec-ans) vec-ans]
-                        [(pair? assoc-ans)
-                         (begin (vector-set! cache slot-pos assoc-ans)
-                                (if (= slot-pos (- (vector-length cache) 1))
-                                    (set! slot-pos 0)
-                                    (set! slot-pos (remainder (+ slot-pos 1) n)))
-                                assoc-ans)]
-                        [else #f])))])
+                  (cond [(= (vector-length cache) (+ n 1)) (set! slot-pos 0)]
+                        [(pair? vec-ans) vec-ans]
+                        [else (pair? assoc-ans)
+                              (begin
+                                (vector-set! cache slot-pos assoc-ans)
+                                (set! slot-pos (remainder (+ slot-pos 1) n))
+                                assoc-ans)])))])
     f))
