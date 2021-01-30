@@ -165,8 +165,9 @@
                   (cond [(pair? vec-ans) vec-ans]
                         [(pair? assoc-ans)
                          (begin (vector-set! cache slot-pos assoc-ans)
-                                (set! slot-pos (if (= (+ slot-pos 1) n)
-                                                   0
-                                                   (+ slot-pos 1)))
-                                assoc-ans)])))])
+                                (if (= slot-pos (- (vector-length cache) 1))
+                                    (set! slot-pos 0)
+                                    (set! slot-pos (remainder (+ slot-pos 1) n)))
+                                assoc-ans)]
+                        [else #f])))])
     f))
